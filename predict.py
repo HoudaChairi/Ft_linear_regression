@@ -1,4 +1,4 @@
-import csv
+# import csv
 
 
 class Predictor:
@@ -11,7 +11,15 @@ class Predictor:
 
 
 def main():
-   
+    with open('model.txt', 'r') as f:
+        data = f.read().strip().split(',')
+        theta0, theta1 = [float(value) for value in data]
+
+    predictor = Predictor(theta0, theta1)
+
+    mileage = float(input("Enter the mileage of the car: "))
+    estimated_price = predictor.estimate_price(mileage)
+    print(f"The estimated price for the car with {mileage} mileage is: {estimated_price}")
 
 
 if __name__ == '__main__':
