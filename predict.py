@@ -11,15 +11,18 @@ class Predictor:
 
 
 def main():
-    with open('model.txt', 'r') as f:
-        data = f.read().strip().split(',')
-        theta0, theta1 = [float(value) for value in data]
+    try:
+        with open('model.txt', 'r') as f:
+            data = f.read().strip().split(',')
+            theta0, theta1 = [float(value) for value in data]
 
-    predictor = Predictor(theta0, theta1)
+        predictor = Predictor(theta0, theta1)
 
-    mileage = float(input("Enter the mileage of the car: "))
-    estimated_price = predictor.estimate_price(mileage)
-    print(f"The estimated price for the car with {mileage} mileage is: {estimated_price}")
+        mileage = float(input("Enter the mileage of the car: "))
+        estimated_price = predictor.estimate_price(mileage)
+        print(f"The estimated price for the car with {mileage} mileage is: {estimated_price}")
+    except BaseException as e:
+        print(f"Error: ", e)
 
 
 if __name__ == '__main__':
