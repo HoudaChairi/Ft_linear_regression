@@ -56,6 +56,19 @@ class LinearRegression:
         plt.ylabel("Loss")
         plt.show()
 
+    def r_squared(self, km, price):
+        predictions = Predictor.estimate_price(km, self.theta0, self.theta1)
+        ss_res = np.sum((price - predictions) ** 2)
+        ss_tot = np.sum((price - np.mean(price)) ** 2)
+        r2 = 1 - (ss_res / ss_tot)
+        return r2
+
+    def set_theta0(self, theta0):
+        self.theta0 = theta0
+
+    def set_theta1(self, theta1):
+        self.theta1 = theta1
+
 def normalize_data(data):
     mean = np.mean(data)
     std = np.std(data)
@@ -76,7 +89,7 @@ def main():
         km_normalized, km_mean, km_std = normalize_data(km)
         price_normalized, price_mean, price_std = normalize_data(price)
 
-        trainer = LinearRegression(learning_rate=0.01, iterations=1000)
+        trainer = LinearRegression()
 
         trainer.gradient_descent(km_normalized, price_normalized)
 
@@ -88,6 +101,7 @@ def main():
         print(f"Final theta1: {trainer.theta1}")
         
         trainer.save_coeff()
+
         trainer.plot_graph(km, price)
         trainer.plot_loss()
 
