@@ -3,6 +3,9 @@ import pandas as pd
 
 
 def main():
+    """
+    Main function to load model coefficients, input data, and calculate the R² score.
+    """
     try:
         with open('coefficient.txt', 'r') as f:
             data = f.read().strip().split(',')
