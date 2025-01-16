@@ -4,7 +4,16 @@ import numpy as np
 from predict import Predictor
 
 class LinearRegression:
+    """
+    A class to perform linear regression using gradient descent to find the best-fitting line.
+    """
     def __init__(self, learning_rate=0.01, iterations=1000):
+        """
+        Initializes the LinearRegression model with specified learning rate and number of iterations.
+
+        param learning_rate: The learning rate for gradient descent (default is 0.01).
+        param iterations: The number of iterations for gradient descent (default is 1000).
+        """
         self.learning_rate = learning_rate
         self.iterations = iterations
         self.theta0 = 0.0
@@ -12,12 +21,25 @@ class LinearRegression:
         self.loss_history = []
 
     def compute_loss(self, km, price):
+        """
+        Computes the loss (mean squared error) of the model.
+
+        param km: The input data for mileage (independent variable).
+        param price: The actual prices (dependent variable).
+        return: The computed loss value.
+        """
         m = len(km)
         errors = Predictor.estimate_price(km, self.theta0, self.theta1) - price
         total_loss = np.sum(errors ** 2) / (2 * m)
         return total_loss
 
     def gradient_descent(self, km, price):
+        """
+        Performs gradient descent to minimize the loss function and update model parameters.
+
+        param km: The input data for mileage (independent variable).
+        param price: The actual prices (dependent variable).
+        """
         m = len(km)
         for _ in range(self.iterations):
             predictions = Predictor.estimate_price(km, self.theta0, self.theta1)
@@ -32,6 +54,11 @@ class LinearRegression:
             self.loss_history.append(loss)
 
     def save_coeff(self, filename="coefficient.txt"):
+        """
+        Saves the model coefficients (theta0 and theta1) to a file.
+
+        param filename: The name of the file to save the coefficients (default is 'coefficient.txt').
+        """
         try:
             with open(filename, "w") as f:
                 f.write(f"{self.theta0},{self.theta1}")
@@ -39,6 +66,12 @@ class LinearRegression:
             print(f"Error saving model: {e}")
 
     def plot_graph(self, km, price):
+        """
+        Plots a scatter plot of mileage vs. price and the regression line.
+
+        param km: The input data for mileage (independent variable).
+        param price: The actual prices (dependent variable).
+        """
         plt.scatter(km, price, color="blue", label="Data points")
         predicted_prices = Predictor.estimate_price(km, self.theta0, self.theta1)
 
@@ -50,6 +83,10 @@ class LinearRegression:
         plt.show()
 
     def plot_loss(self):
+        """
+        Plots the loss history over iterations.
+
+        """
         plt.plot(range(len(self.loss_history)), self.loss_history, color="green")
         plt.title("Loss Over Time")
         plt.xlabel("Iteration")
@@ -57,6 +94,13 @@ class LinearRegression:
         plt.show()
 
     def r_squared(self, km, price):
+        """
+        Computes the R-squared value to evaluate the model's performance.
+
+        param km: The input data for mileage (independent variable).
+        param price: The actual prices (dependent variable).
+        return: The R-squared value.
+        """
         predictions = Predictor.estimate_price(km, self.theta0, self.theta1)
         ss_res = np.sum((price - predictions) ** 2)
         ss_tot = np.sum((price - np.mean(price)) ** 2)
@@ -64,23 +108,53 @@ class LinearRegression:
         return r2
 
     def set_theta0(self, theta0):
+        """
+        Sets the value of theta0 (intercept).
+
+        param theta0: The intercept value to set.
+        """
         self.theta0 = theta0
 
     def set_theta1(self, theta1):
+        """
+        Sets the value of theta1 (slope).
+
+        :param theta1: The slope value to set.
+        """
         self.theta1 = theta1
 
 def normalize_data(data):
+    """
+    Normalizes the input data by subtracting the mean and dividing by the standard deviation.
+
+    param data: The input data to normalize.
+    return: The normalized data, mean, and standard deviation.
+    """
     mean = np.mean(data)
     std = np.std(data)
     normalized_data = (data - mean) / std
     return normalized_data, mean, std
 
 def denormalize_theta(theta0, theta1, km_mean, km_std, price_mean, price_std):
+    """
+    Denormalizes the model parameters theta0 and theta1 using the provided means and standard deviations.
+
+    param theta0: The intercept parameter (theta0) of the model.
+    param theta1: The slope parameter (theta1) of the model.
+    param km_mean: The mean value of the mileage data.
+    param km_std: The standard deviation of the mileage data.
+    param price_mean: The mean value of the price data.
+    param price_std: The standard deviation of the price data.
+    return: The denormalized theta0 and theta1.
+    """
     theta1 = theta1 * price_std / km_std
     theta0 = price_mean - theta1 * km_mean
     return theta0, theta1
 
 def main():
+    """
+    Main function to load data, train the model, and visualize results.
+    """
     try:
         data = pd.read_csv("data.csv")
         km = data["km"].values
