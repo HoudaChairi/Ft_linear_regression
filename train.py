@@ -41,8 +41,8 @@ class LinearRegression:
         """
         m = len(km)
         for _ in range(self.iterations):
-            price_predict = Predictor.estimate_price(km, self.theta0, self.theta1)
-            errors = price_predict - price
+            predict_price = Predictor.estimate_price(km, self.theta0, self.theta1)
+            errors = predict_price - price
 
             self.theta0 -= self.learning_rate * np.sum(errors) / m
             self.theta1 -= self.learning_rate * np.sum(errors * km) / m
@@ -99,8 +99,8 @@ class LinearRegression:
         price: The actual prices (dependent variable).
         return: The R-squared value.
         """
-        predictions = Predictor.estimate_price(km, self.theta0, self.theta1)
-        ss_res = np.sum((price - predictions) ** 2)
+        predict_price = Predictor.estimate_price(km, self.theta0, self.theta1)
+        ss_res = np.sum((price - predict_price) ** 2)
         ss_tot = np.sum((price - np.mean(price)) ** 2)
         r2 = 1 - (ss_res / ss_tot)
         return r2
