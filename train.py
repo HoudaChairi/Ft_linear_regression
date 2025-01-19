@@ -11,8 +11,8 @@ class LinearRegression:
         """
         Initializes the LinearRegression model with specified learning rate and number of iterations.
 
-        param learning_rate: The learning rate for gradient descent (default is 0.01).
-        param iterations: The number of iterations for gradient descent (default is 1000).
+        learning_rate: The learning rate for gradient descent (default is 0.01).
+        iterations: The number of iterations for gradient descent (default is 1000).
         """
         self.learning_rate = learning_rate
         self.iterations = iterations
@@ -20,44 +20,42 @@ class LinearRegression:
         self.theta1 = 0.0
         self.loss_history = []
 
-    def compute_loss(self, km, price):
+    def calculate_loss(self, errors):
         """
-        Computes the loss (mean squared error) of the model.
+        Computes the loss (mean squared error) of the model using precomputed errors.
 
-        param km: The input data for mileage (independent variable).
-        param price: The actual prices (dependent variable).
+        errors: Precomputed prediction errors.
         return: The computed loss value.
         """
-        m = len(km)
-        errors = Predictor.estimate_price(km, self.theta0, self.theta1) - price
+        m = len(errors)
         total_loss = np.sum(errors ** 2) / (2 * m)
         return total_loss
+
 
     def gradient_descent(self, km, price):
         """
         Performs gradient descent to minimize the loss function and update model parameters.
 
-        param km: The input data for mileage (independent variable).
-        param price: The actual prices (dependent variable).
+        km: The input data for mileage (independent variable).
+        price: The actual prices (dependent variable).
         """
         m = len(km)
         for _ in range(self.iterations):
-            predictions = Predictor.estimate_price(km, self.theta0, self.theta1)
-            errors = predictions - price
+            price_predict = Predictor.estimate_price(km, self.theta0, self.theta1)
+            errors = price_predict - price
 
-            tmp_theta0 = self.theta0 - self.learning_rate * np.sum(errors) / m
-            tmp_theta1 = self.theta1 - self.learning_rate * np.sum(errors * km) / m
+            self.theta0 -= self.learning_rate * np.sum(errors) / m
+            self.theta1 -= self.learning_rate * np.sum(errors * km) / m
 
-            self.theta0, self.theta1 = tmp_theta0, tmp_theta1
-
-            loss = self.compute_loss(km, price)
+            loss = self.calculate_loss(errors)
             self.loss_history.append(loss)
+
 
     def save_coeff(self, filename="coefficient.txt"):
         """
         Saves the model coefficients (theta0 and theta1) to a file.
 
-        param filename: The name of the file to save the coefficients (default is 'coefficient.txt').
+        filename: The name of the file to save the coefficients (default is 'coefficient.txt').
         """
         try:
             with open(filename, "w") as f:
@@ -69,8 +67,8 @@ class LinearRegression:
         """
         Plots a scatter plot of mileage vs. price and the regression line.
 
-        param km: The input data for mileage (independent variable).
-        param price: The actual prices (dependent variable).
+        km: The input data for mileage (independent variable).
+        price: The actual prices (dependent variable).
         """
         plt.scatter(km, price, color="blue", label="Data points")
         predicted_prices = Predictor.estimate_price(km, self.theta0, self.theta1)
@@ -97,8 +95,8 @@ class LinearRegression:
         """
         Computes the R-squared value to evaluate the model's performance.
 
-        param km: The input data for mileage (independent variable).
-        param price: The actual prices (dependent variable).
+        km: The input data for mileage (independent variable).
+        price: The actual prices (dependent variable).
         return: The R-squared value.
         """
         predictions = Predictor.estimate_price(km, self.theta0, self.theta1)
@@ -111,7 +109,7 @@ class LinearRegression:
         """
         Sets the value of theta0 (intercept).
 
-        param theta0: The intercept value to set.
+        theta0: The intercept value to set.
         """
         self.theta0 = theta0
 
@@ -119,7 +117,7 @@ class LinearRegression:
         """
         Sets the value of theta1 (slope).
 
-        :param theta1: The slope value to set.
+        theta1: The slope value to set.
         """
         self.theta1 = theta1
 
@@ -127,7 +125,7 @@ def normalize_data(data):
     """
     Normalizes the input data by subtracting the mean and dividing by the standard deviation.
 
-    param data: The input data to normalize.
+    data: The input data to normalize.
     return: The normalized data, mean, and standard deviation.
     """
     mean = np.mean(data)
@@ -139,12 +137,12 @@ def denormalize_theta(theta0, theta1, km_mean, km_std, price_mean, price_std):
     """
     Denormalizes the model parameters theta0 and theta1 using the provided means and standard deviations.
 
-    param theta0: The intercept parameter (theta0) of the model.
-    param theta1: The slope parameter (theta1) of the model.
-    param km_mean: The mean value of the mileage data.
-    param km_std: The standard deviation of the mileage data.
-    param price_mean: The mean value of the price data.
-    param price_std: The standard deviation of the price data.
+    theta0: The intercept parameter (theta0) of the model.
+    theta1: The slope parameter (theta1) of the model.
+    km_mean: The mean value of the mileage data.
+    km_std: The standard deviation of the mileage data.
+    price_mean: The mean value of the price data.
+    price_std: The standard deviation of the price data.
     return: The denormalized theta0 and theta1.
     """
     theta1 = theta1 * price_std / km_std
@@ -171,8 +169,8 @@ def main():
             trainer.theta0, trainer.theta1, km_mean, km_std, price_mean, price_std
         )
 
-        print(f"Final theta0: {trainer.theta0}")
-        print(f"Final theta1: {trainer.theta1}")
+        print(f"theta0: {trainer.theta0}")
+        print(f"theta1: {trainer.theta1}")
         
         trainer.save_coeff()
 

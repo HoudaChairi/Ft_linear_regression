@@ -7,8 +7,8 @@ class Predictor:
         """
         Initializes the Predictor with given model parameters (theta0, theta1).
 
-        :param theta0: The intercept parameter of the model (default is 0).
-        :param theta1: The slope parameter of the model (default is 0).
+        param theta0: The intercept parameter of the model (default is 0).
+        param theta1: The slope parameter of the model (default is 0).
         """
         self.theta0 = theta0
         self.theta1 = theta1
