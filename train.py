@@ -54,11 +54,12 @@ class LinearRegression:
                 km, self.theta0, self.theta1)
             errors = predict_price - price
 
+            loss = self.calculate_loss(errors)
+            self.loss_history.append(loss)
+
             self.theta0 -= self.learning_rate * np.sum(errors) / m
             self.theta1 -= self.learning_rate * np.sum(errors * km) / m
 
-            loss = self.calculate_loss(errors)
-            self.loss_history.append(loss)
 
     def save_coeff(self, filename="coefficient.txt"):
         """
