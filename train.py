@@ -9,6 +9,7 @@ class LinearRegression:
     A class to perform linear regression using gradient descent
     to find the best-fitting line.
     """
+
     def __init__(self, learning_rate=0.01, iterations=1000):
         """
         Initializes the LinearRegression model with specified
@@ -33,6 +34,7 @@ class LinearRegression:
         errors: Precomputed prediction errors.
         return: The computed loss value.
         """
+
         m = len(errors)
         total_loss = np.sum(errors ** 2) / (2 * m)
         return total_loss
@@ -45,6 +47,7 @@ class LinearRegression:
         km: The input data for mileage (independent variable).
         price: The actual prices (dependent variable).
         """
+
         m = len(km)
         for _ in range(self.iterations):
             predict_price = Predictor.estimate_price(
@@ -64,6 +67,7 @@ class LinearRegression:
         filename: The name of the file to save the coefficients
         (default is 'coefficient.txt').
         """
+
         try:
             with open(filename, "w") as f:
                 f.write(f"{self.theta0},{self.theta1}")
@@ -77,6 +81,7 @@ class LinearRegression:
         km: The input data for mileage (independent variable).
         price: The actual prices (dependent variable).
         """
+
         plt.scatter(km, price, color="blue", label="Data points")
         predicted_prices = Predictor.estimate_price(
             km, self.theta0, self.theta1)
@@ -91,8 +96,8 @@ class LinearRegression:
     def plot_loss(self):
         """
         Plots the loss history over iterations.
-
         """
+
         plt.plot(range(
             len(self.loss_history)), self.loss_history, color="green")
         plt.title("Loss Over Time")
@@ -108,6 +113,7 @@ class LinearRegression:
         price: The actual prices (dependent variable).
         return: The R-squared value.
         """
+
         predict_price = Predictor.estimate_price(km, self.theta0, self.theta1)
         ss_res = np.sum((price - predict_price) ** 2)
         ss_tot = np.sum((price - np.mean(price)) ** 2)
@@ -120,6 +126,7 @@ class LinearRegression:
 
         theta0: The intercept value to set.
         """
+
         self.theta0 = theta0
 
     def set_theta1(self, theta1):
@@ -128,6 +135,7 @@ class LinearRegression:
 
         theta1: The slope value to set.
         """
+
         self.theta1 = theta1
 
 
@@ -139,6 +147,7 @@ def normalize_data(data):
     data: The input data to normalize.
     return: The normalized data, mean, and standard deviation.
     """
+
     mean = np.mean(data)
     std = np.std(data)
     normalized_data = (data - mean) / std
@@ -158,6 +167,7 @@ def denormalize_theta(theta0, theta1, km_mean, km_std, price_mean, price_std):
     price_std: The standard deviation of the price data.
     return: The denormalized theta0 and theta1.
     """
+
     theta1 = theta1 * price_std / km_std
     theta0 = price_mean - theta1 * km_mean
     return theta0, theta1
@@ -167,6 +177,7 @@ def main():
     """
     Main function to load data, train the model, and visualize results.
     """
+
     try:
         data = pd.read_csv("data.csv")
         km = data["km"].values
