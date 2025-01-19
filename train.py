@@ -3,16 +3,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 from predict import Predictor
 
+
 class LinearRegression:
     """
-    A class to perform linear regression using gradient descent to find the best-fitting line.
+    A class to perform linear regression using gradient descent
+    to find the best-fitting line.
     """
     def __init__(self, learning_rate=0.01, iterations=1000):
         """
-        Initializes the LinearRegression model with specified learning rate and number of iterations.
+        Initializes the LinearRegression model with specified
+        learning rate and number of iterations.
 
-        learning_rate: The learning rate for gradient descent (default is 0.01).
-        iterations: The number of iterations for gradient descent (default is 1000).
+        learning_rate: The learning rate for gradient descent
+        (default is 0.01).
+        iterations: The number of iterations for gradient descent
+        (default is 1000).
         """
         self.learning_rate = learning_rate
         self.iterations = iterations
@@ -22,7 +27,8 @@ class LinearRegression:
 
     def calculate_loss(self, errors):
         """
-        Computes the loss (mean squared error) of the model using precomputed errors.
+        Computes the loss (mean squared error) of
+        the model using precomputed errors.
 
         errors: Precomputed prediction errors.
         return: The computed loss value.
@@ -31,17 +37,18 @@ class LinearRegression:
         total_loss = np.sum(errors ** 2) / (2 * m)
         return total_loss
 
-
     def gradient_descent(self, km, price):
         """
-        Performs gradient descent to minimize the loss function and update model parameters.
+        Performs gradient descent to minimize the loss function
+        and update model parameters.
 
         km: The input data for mileage (independent variable).
         price: The actual prices (dependent variable).
         """
         m = len(km)
         for _ in range(self.iterations):
-            predict_price = Predictor.estimate_price(km, self.theta0, self.theta1)
+            predict_price = Predictor.estimate_price(
+                km, self.theta0, self.theta1)
             errors = predict_price - price
 
             self.theta0 -= self.learning_rate * np.sum(errors) / m
@@ -50,12 +57,12 @@ class LinearRegression:
             loss = self.calculate_loss(errors)
             self.loss_history.append(loss)
 
-
     def save_coeff(self, filename="coefficient.txt"):
         """
         Saves the model coefficients (theta0 and theta1) to a file.
 
-        filename: The name of the file to save the coefficients (default is 'coefficient.txt').
+        filename: The name of the file to save the coefficients
+        (default is 'coefficient.txt').
         """
         try:
             with open(filename, "w") as f:
@@ -71,7 +78,8 @@ class LinearRegression:
         price: The actual prices (dependent variable).
         """
         plt.scatter(km, price, color="blue", label="Data points")
-        predicted_prices = Predictor.estimate_price(km, self.theta0, self.theta1)
+        predicted_prices = Predictor.estimate_price(
+            km, self.theta0, self.theta1)
 
         plt.plot(km, predicted_prices, color="red", label="Regression line")
         plt.title("Mileage vs Price")
@@ -85,7 +93,8 @@ class LinearRegression:
         Plots the loss history over iterations.
 
         """
-        plt.plot(range(len(self.loss_history)), self.loss_history, color="green")
+        plt.plot(range(
+            len(self.loss_history)), self.loss_history, color="green")
         plt.title("Loss Over Time")
         plt.xlabel("Iteration")
         plt.ylabel("Loss")
@@ -121,9 +130,11 @@ class LinearRegression:
         """
         self.theta1 = theta1
 
+
 def normalize_data(data):
     """
-    Normalizes the input data by subtracting the mean and dividing by the standard deviation.
+    Normalizes the input data by subtracting the mean
+    and dividing by the standard deviation.
 
     data: The input data to normalize.
     return: The normalized data, mean, and standard deviation.
@@ -133,9 +144,11 @@ def normalize_data(data):
     normalized_data = (data - mean) / std
     return normalized_data, mean, std
 
+
 def denormalize_theta(theta0, theta1, km_mean, km_std, price_mean, price_std):
     """
-    Denormalizes the model parameters theta0 and theta1 using the provided means and standard deviations.
+    Denormalizes the model parameters theta0 and theta1
+    using the provided means and standard deviations.
 
     theta0: The intercept parameter (theta0) of the model.
     theta1: The slope parameter (theta1) of the model.
@@ -148,6 +161,7 @@ def denormalize_theta(theta0, theta1, km_mean, km_std, price_mean, price_std):
     theta1 = theta1 * price_std / km_std
     theta0 = price_mean - theta1 * km_mean
     return theta0, theta1
+
 
 def main():
     """
@@ -166,12 +180,13 @@ def main():
         trainer.gradient_descent(km_normalized, price_normalized)
 
         trainer.theta0, trainer.theta1 = denormalize_theta(
-            trainer.theta0, trainer.theta1, km_mean, km_std, price_mean, price_std
+            trainer.theta0, trainer.theta1, km_mean,
+            km_std, price_mean, price_std
         )
 
         print(f"theta0: {trainer.theta0}")
         print(f"theta1: {trainer.theta1}")
-        
+
         trainer.save_coeff()
 
         trainer.plot_graph(km, price)
@@ -179,6 +194,7 @@ def main():
 
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     main()

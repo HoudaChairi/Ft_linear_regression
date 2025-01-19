@@ -1,8 +1,10 @@
 
 class Predictor:
     """
-    A class to predict the price based on mileage and model parameters (theta0 and theta1).
+    A class to predict the price based on mileage
+    and model parameters (theta0 and theta1).
     """
+
     def __init__(self, theta0=0, theta1=0):
         """
         Initializes the Predictor with given model parameters (theta0, theta1).
@@ -25,6 +27,7 @@ class Predictor:
         """
         return theta0 + (theta1 * mileage)
 
+
 def main():
     try:
         with open('coefficient.txt', 'r') as f:
@@ -37,7 +40,7 @@ def main():
         estimated_price = predictor.estimate_price(mileage, theta0, theta1)
         print(f"The estimated price: {estimated_price}")
     except BaseException as e:
-        print(f"Error: ", e)
+        print(f"Error: {e}")
 
 
 if __name__ == '__main__':
