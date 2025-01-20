@@ -51,26 +51,6 @@ The project consists of two main programs:
    - Saves optimized θ₀ and θ₁ values
    - Visualizes data and regression line (bonus feature)
 
-## 🚀 Getting Started
-
-### Installation
-```bash
-git clone https://github.com/HoudaChairi/Ft_linear_regression.git
-cd Ft_linear_regression
-```
-
-### Usage
-1. First, train the model:
-```bash
-./trainer data.csv
-```
-2. Then use the predictor:
-```bash
-./predictor
-Enter mileage: 100000
-Estimated price: $XXXX
-```
-
 ## 📊 Bonus Features
 - **Data Visualization**: Plot showing:
   - Raw data points (mileage vs. price)
