@@ -80,7 +80,7 @@ Estimated price: $XXXX
   - Mean Squared Error (MSE)
   - R-squared value
   - Prediction accuracy metrics
-  - 
+    
 ## 📈 Learning Outcomes
 Through this project, you will learn:
 - Fundamentals of machine learning
@@ -88,5 +88,3 @@ Through this project, you will learn:
 - Data preprocessing and normalization
 - Model evaluation techniques
 - Data visualization best practices
-- 
-## 📈 Resources
