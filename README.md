@@ -5,6 +5,11 @@ This project implements a simple linear regression model to predict car prices b
 - Implementation of gradient descent algorithm
 - Understanding linear regression with a single feature
 - Data visualization and model evaluation
+  
+<!---## Plot Data after Training -->
+
+  ![scree3](https://github.com/user-attachments/assets/19939eb0-8419-4980-958f-125afcbe6b75)
+
 
 ## 🧠 Concepts Needed for the Project
 * Linear Regression 📈
