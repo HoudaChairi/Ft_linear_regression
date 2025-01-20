@@ -13,16 +13,25 @@ This project implements a simple linear regression model to predict car prices b
 
 ## 🧠 Concepts Needed for the Project
 * Linear Regression 📈
+  
+  A fundamental statistical and machine learning approach that models the relationship between a dependent variable (target)
+    and one or more independent variables (features) by fitting a linear equation to the observed data.
   - Understanding the relationship between independent and dependent variables
   - How to fit a line to data points
   - Predicting continuous values based on input features
 
 * Gradient Descent 📉
+  
+  An optimization algorithm that iteratively adjusts parameters to minimize an error function by computing
+    the gradient (derivative) of the loss function and moving in the direction of steepest descent.
   - Iterative optimization algorithm
   - Finding the minimum of the cost function
   - Updating parameters to improve predictions
 
 * Loss Function 🧮
+  
+  A function that measures how well your model's predictions match the actual data by calculating the difference
+    between predicted and actual values, where a smaller value indicates better model performance.
   - Measuring prediction errors
   - Mean Squared Error (MSE)
   - Cost function optimization
