@@ -26,21 +26,30 @@ class Predictor:
         :return: The estimated price.
         """
         return theta0 + (theta1 * mileage)
+    
+    def set_theta0(self, value):
+        self.theta0 = value
+
+    def set_theta1(self, value):
+        self.theta1 = value
 
 
 def main():
     try:
+        predictor = Predictor()
         with open('coefficient.txt', 'r') as f:
             data = f.read().strip().split(',')
             theta0, theta1 = [float(value) for value in data]
 
-        predictor = Predictor(theta0, theta1)
+    except BaseException:
+        theta0 = theta1 = 0
+    
+    predictor.set_theta0(theta0)
+    predictor.set_theta1(theta1)
 
-        mileage = float(input("Enter the mileage: "))
-        estimated_price = predictor.estimate_price(mileage, theta0, theta1)
-        print(f"The estimated price: {estimated_price}")
-    except BaseException as e:
-        print(f"Error: {e}")
+    mileage = float(input("Enter the mileage: "))
+    estimated_price = predictor.estimate_price(mileage, theta0, theta1)
+    print(f"The estimated price: {estimated_price}")
 
 
 if __name__ == '__main__':

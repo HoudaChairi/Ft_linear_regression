@@ -1,2 +1,7 @@
 __pycache__
 env
+coefficient.txt
+requirements.txt
+data.csv
+.venv
+README.md

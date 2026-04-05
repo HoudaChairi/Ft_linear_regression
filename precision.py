@@ -1,7 +1,6 @@
 from train import LinearRegression
 import pandas as pd
 
-
 def main():
     """
     Main function to load model coefficients,
