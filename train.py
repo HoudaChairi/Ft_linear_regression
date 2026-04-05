@@ -36,7 +36,7 @@ class LinearRegression:
         """
 
         m = len(errors)
-        total_loss = np.sum(errors ** 2) / (2 * m)
+        total_loss = np.sum(errors ** 2) / m
         return total_loss
 
     def gradient_descent(self, km, price):
@@ -57,8 +57,11 @@ class LinearRegression:
             loss = self.calculate_loss(errors)
             self.loss_history.append(loss)
 
-            self.theta0 -= self.learning_rate * np.sum(errors) / m
-            self.theta1 -= self.learning_rate * np.sum(errors * km) / m
+            tmp_0 = self.theta0 - (self.learning_rate * np.sum(errors) / m)
+            tmp_1 = self.theta1 - (self.learning_rate * np.sum(errors * km) / m)
+
+            self.theta0 = tmp_0
+            self.theta1 = tmp_1
 
 
     def save_coeff(self, filename="coefficient.txt"):
@@ -180,7 +183,7 @@ def main():
     """
 
     try:
-        data = pd.read_csv("data.csv")
+        data = pd.read_csv("data.csv") 
         km = data["km"].values
         price = data["price"].values
 
@@ -195,7 +198,7 @@ def main():
             trainer.theta0, trainer.theta1, km_mean,
             km_std, price_mean, price_std
         )
-
+        
         print(f"theta0: {trainer.theta0}")
         print(f"theta1: {trainer.theta1}")
 
