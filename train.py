@@ -154,6 +154,9 @@ def normalize_data(data):
 
     mean = np.mean(data)
     std = np.std(data)
+
+    if std == 0:
+            raise ValueError("All values are identical.")
     normalized_data = (data - mean) / std
     return normalized_data, mean, std
 
@@ -183,7 +186,11 @@ def main():
     """
 
     try:
-        data = pd.read_csv("data.csv") 
+        data = pd.read_csv("data.csv")
+
+        if data["km"].isnull().any() or data["price"].isnull().any():
+            raise ValueError("Dataset contains NaN values.")
+
         km = data["km"].values
         price = data["price"].values
 
