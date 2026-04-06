@@ -41,13 +41,29 @@ def main():
             data = f.read().strip().split(',')
             theta0, theta1 = [float(value) for value in data]
 
-    except BaseException:
+    except (FileNotFoundError, ValueError):
         theta0 = theta1 = 0
     
     predictor.set_theta0(theta0)
     predictor.set_theta1(theta1)
 
-    mileage = float(input("Enter the mileage: "))
+    while True:
+        user_input = input("Enter the mileage: ").strip()
+
+        if user_input == "":
+            print("Mileage cannot be empty.")
+            continue
+
+        try:
+            mileage = float(user_input)
+
+            if mileage < 0:
+                print("Mileage cannot be negative.")
+                continue
+
+            break
+        except ValueError:
+            print("Please enter a valid number.")
     estimated_price = predictor.estimate_price(mileage, theta0, theta1)
     print(f"The estimated price: {estimated_price}")
 

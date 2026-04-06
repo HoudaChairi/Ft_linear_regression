@@ -205,9 +205,6 @@ def main():
             trainer.theta0, trainer.theta1, km_mean,
             km_std, price_mean, price_std
         )
-        
-        print(f"theta0: {trainer.theta0}")
-        print(f"theta1: {trainer.theta1}")
 
         trainer.save_coeff()
 
