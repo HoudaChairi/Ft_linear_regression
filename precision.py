@@ -1,22 +1,24 @@
 from train import LinearRegression
+from predict import load_coefficients
 import pandas as pd
+
 
 def main():
     """
-    Main function to load model coefficients,
-    input data, and calculate the R² score.
+    Load model coefficients, dataset,
+    and compute the R² score.
     """
     try:
-        with open('coefficient.txt', 'r') as f:
-            data = f.read().strip().split(',')
-            theta0, theta1 = [float(value) for value in data]
-
+        theta0, theta1 = load_coefficients()
         data = pd.read_csv("data.csv")
+
+        if data["km"].isnull().any() or data["price"].isnull().any():
+            raise ValueError("Dataset contains NaN values.")
+
         km = data["km"].values
         price = data["price"].values
 
         trainer = LinearRegression()
-
         trainer.set_theta0(theta0)
         trainer.set_theta1(theta1)
 

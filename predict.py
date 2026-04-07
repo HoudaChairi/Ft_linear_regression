@@ -6,65 +6,66 @@ class Predictor:
     """
 
     def __init__(self, theta0=0, theta1=0):
-        """
-        Initializes the Predictor with given model parameters (theta0, theta1).
-
-        param theta0: The intercept parameter of the model (default is 0).
-        param theta1: The slope parameter of the model (default is 0).
-        """
         self.theta0 = theta0
         self.theta1 = theta1
 
+    def predict(self, mileage):
+        return self.theta0 + (self.theta1 * mileage)
+
     @staticmethod
     def estimate_price(mileage, theta0, theta1):
-        """
-        Estimates the price based on mileage and model parameters.
-
-        :param mileage: The mileage of the car.
-        :param theta0: The intercept parameter of the model.
-        :param theta1: The slope parameter of the model.
-        :return: The estimated price.
-        """
         return theta0 + (theta1 * mileage)
-    
-    def set_theta0(self, value):
-        self.theta0 = value
-
-    def set_theta1(self, value):
-        self.theta1 = value
 
 
-def main():
+def load_coefficients(filename="coefficient.txt"):
+    """Load theta0 and theta1 safely from file."""
     try:
-        predictor = Predictor()
-        with open('coefficient.txt', 'r') as f:
+        with open(filename, 'r') as f:
             data = f.read().strip().split(',')
-            theta0, theta1 = [float(value) for value in data]
+
+            if len(data) < 2:
+                raise ValueError("Not enough coefficients.")
+
+            theta0, theta1 = [float(value.strip()) for value in data[:2]]
+            return theta0, theta1
 
     except (FileNotFoundError, ValueError):
-        theta0 = theta1 = 0
-    
-    predictor.set_theta0(theta0)
-    predictor.set_theta1(theta1)
+        return 0, 0
 
+
+def get_valid_mileage():
+    """Validate user input."""
     while True:
-        user_input = input("Enter the mileage: ").strip()
-
-        if user_input == "":
-            print("Mileage cannot be empty.")
-            continue
-
         try:
+            user_input = input("Enter the mileage: ").strip()
+
+            if not user_input:
+                print("Mileage cannot be empty.")
+                continue
+
             mileage = float(user_input)
 
             if mileage < 0:
                 print("Mileage cannot be negative.")
                 continue
 
-            break
+            return mileage
+
         except ValueError:
             print("Please enter a valid number.")
-    estimated_price = predictor.estimate_price(mileage, theta0, theta1)
+
+        except KeyboardInterrupt:
+            print("\nProgram interrupted. Exiting cleanly.")
+            exit()
+
+def main():
+    theta0, theta1 = load_coefficients()
+
+    predictor = Predictor(theta0, theta1)
+
+    mileage = get_valid_mileage()
+
+    estimated_price = predictor.predict(mileage)
     print(f"The estimated price: {estimated_price}")
 
 

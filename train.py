@@ -139,7 +139,7 @@ class LinearRegression:
 
         theta1: The slope value to set.
         """
-
+    
         self.theta1 = theta1
 
 
